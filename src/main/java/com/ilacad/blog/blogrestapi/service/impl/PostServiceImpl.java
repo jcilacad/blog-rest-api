@@ -20,9 +20,11 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostDto createPost(PostDto postDto) {
 
+        Post post = mapToEntity(postDto);
         // Save the post to database
         Post newPost = postRepository.save(post);
 
+        PostDto postResponse = mapToDto(newPost);
 
         return postResponse;
     }
