@@ -1,6 +1,7 @@
 package com.ilacad.blog.blogrestapi.service.impl;
 
 import com.ilacad.blog.blogrestapi.entity.Post;
+import com.ilacad.blog.blogrestapi.exception.ResourceNotFoundException;
 import com.ilacad.blog.blogrestapi.payload.PostDto;
 import com.ilacad.blog.blogrestapi.repository.PostRepository;
 import com.ilacad.blog.blogrestapi.service.PostService;
@@ -64,5 +65,12 @@ public class PostServiceImpl implements PostService {
         );
 
         return post;
+    }
+
+    @Override
+    public PostDto getPostById(Long id) {
+
+        Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
+        return mapToDto(post);
     }
 }
