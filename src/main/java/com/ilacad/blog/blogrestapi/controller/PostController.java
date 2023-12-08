@@ -1,6 +1,7 @@
 package com.ilacad.blog.blogrestapi.controller;
 
 import com.ilacad.blog.blogrestapi.payload.PostDto;
+import com.ilacad.blog.blogrestapi.payload.PostResponse;
 import com.ilacad.blog.blogrestapi.service.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +25,8 @@ public class PostController {
     }
 
     @GetMapping
-    public List<PostDto> getAllPosts(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
-                                     @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+    public PostResponse getAllPosts(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+                                    @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
 
         return postService.getAllPosts(pageNo, pageSize);
     }

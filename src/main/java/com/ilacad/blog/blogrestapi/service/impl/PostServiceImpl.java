@@ -3,6 +3,7 @@ package com.ilacad.blog.blogrestapi.service.impl;
 import com.ilacad.blog.blogrestapi.entity.Post;
 import com.ilacad.blog.blogrestapi.exception.ResourceNotFoundException;
 import com.ilacad.blog.blogrestapi.payload.PostDto;
+import com.ilacad.blog.blogrestapi.payload.PostResponse;
 import com.ilacad.blog.blogrestapi.repository.PostRepository;
 import com.ilacad.blog.blogrestapi.service.PostService;
 import com.zaxxer.hikari.metrics.PoolStats;
@@ -36,7 +37,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> getAllPosts(int pageNo, int pageSize) {
+    public PostResponse getAllPosts(int pageNo, int pageSize) {
 
         // Create an instance of Pageable
         Pageable pageable = PageRequest.of(pageNo, pageSize);
@@ -48,7 +49,18 @@ public class PostServiceImpl implements PostService {
         List<Post> pageList = posts.getContent();
 
         // Convert post entity to dto
-        return pageList.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
+        List<PostDto> content =  pageList.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
+
+        PostResponse postResponse = new PostResponse();
+
+        postResponse.setContent(content);
+        postResponse.setPageNo(posts.getNumber());
+        postResponse.setPageSize(posts.getSize());
+        postResponse.setTotalElement(posts.getTotalElements());
+        postResponse.setTotalPages(posts.getTotalPages());
+        postResponse.setLast(posts.isLast());
+
+        return postResponse;
     }
 
     // Convert entity to dto

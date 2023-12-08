@@ -1,13 +1,14 @@
 package com.ilacad.blog.blogrestapi.service;
 
 import com.ilacad.blog.blogrestapi.payload.PostDto;
+import com.ilacad.blog.blogrestapi.payload.PostResponse;
 
 import java.util.List;
 
 public interface PostService {
     PostDto createPost(PostDto postDto);
 
-    List<PostDto> getAllPosts(int pageNo, int pageSize);
+    PostResponse getAllPosts(int pageNo, int pageSize);
 
     PostDto getPostById(Long id);
 
