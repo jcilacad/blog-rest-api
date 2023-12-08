@@ -41,7 +41,7 @@ public class PostServiceImpl implements PostService {
 
         // Condition for sorting direction
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() :
-                Sort.by(sortDir).descending();
+                Sort.by(sortBy).descending();
 
         // Create an instance of Pageable
         Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
