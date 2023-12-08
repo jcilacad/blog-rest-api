@@ -6,7 +6,6 @@ import com.ilacad.blog.blogrestapi.payload.PostDto;
 import com.ilacad.blog.blogrestapi.payload.PostResponse;
 import com.ilacad.blog.blogrestapi.repository.PostRepository;
 import com.ilacad.blog.blogrestapi.service.PostService;
-import com.zaxxer.hikari.metrics.PoolStats;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -38,10 +37,14 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostResponse getAllPosts(int pageNo, int pageSize, String sortBy) {
+    public PostResponse getAllPosts(int pageNo, int pageSize, String sortBy, String sortDir) {
+
+        // Condition for sorting direction
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() :
+                Sort.by(sortDir).descending();
 
         // Create an instance of Pageable
-        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
 
         // Get all posts in db
         Page<Post> posts = postRepository.findAll(pageable);
