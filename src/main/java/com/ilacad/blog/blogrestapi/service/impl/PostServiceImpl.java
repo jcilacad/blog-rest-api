@@ -5,6 +5,10 @@ import com.ilacad.blog.blogrestapi.exception.ResourceNotFoundException;
 import com.ilacad.blog.blogrestapi.payload.PostDto;
 import com.ilacad.blog.blogrestapi.repository.PostRepository;
 import com.ilacad.blog.blogrestapi.service.PostService;
+import com.zaxxer.hikari.metrics.PoolStats;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,13 +36,19 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> getAllPosts() {
+    public List<PostDto> getAllPosts(int pageNo, int pageSize) {
+
+        // Create an instance of Pageable
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
 
         // Get all posts in db
-        List<Post> posts = postRepository.findAll();
+        Page<Post> posts = postRepository.findAll(pageable);
+
+        // Convert page to list
+        List<Post> pageList = posts.getContent();
 
         // Convert post entity to dto
-        return posts.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
+        return pageList.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
     }
 
     // Convert entity to dto
