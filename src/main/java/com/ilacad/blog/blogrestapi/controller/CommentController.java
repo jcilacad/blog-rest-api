@@ -1,8 +1,10 @@
 package com.ilacad.blog.blogrestapi.controller;
 
+import com.ilacad.blog.blogrestapi.payload.CommentDto;
 import com.ilacad.blog.blogrestapi.service.CommentService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
@@ -14,4 +16,10 @@ public class CommentController {
         this.commentService = commentService;
     }
 
+    @PostMapping("/posts/{postId}/comments")
+    public ResponseEntity<CommentDto> createComment(@PathVariable(name = "postId") Long postId,
+                                                    @RequestBody CommentDto commentDto) {
+
+        return new ResponseEntity<>(commentService.createComment(postId, commentDto), HttpStatus.CREATED);
+    }
 }
