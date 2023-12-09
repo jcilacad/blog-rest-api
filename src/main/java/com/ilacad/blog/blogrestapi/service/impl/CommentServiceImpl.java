@@ -34,7 +34,7 @@ public class CommentServiceImpl implements CommentService {
 
         // Save the new comment to database
         Comment newComment = commentRepository.save(comment);
-        
+
         return mapToDto(newComment);
     }
 
