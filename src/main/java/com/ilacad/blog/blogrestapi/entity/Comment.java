@@ -30,4 +30,10 @@ public class Comment {
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
+    public Comment(Long id, String name, String email, String body) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.body = body;
+    }
 }
