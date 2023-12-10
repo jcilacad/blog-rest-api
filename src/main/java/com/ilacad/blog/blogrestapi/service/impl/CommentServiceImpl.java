@@ -2,6 +2,7 @@ package com.ilacad.blog.blogrestapi.service.impl;
 
 import com.ilacad.blog.blogrestapi.entity.Comment;
 import com.ilacad.blog.blogrestapi.entity.Post;
+import com.ilacad.blog.blogrestapi.exception.BlogApiException;
 import com.ilacad.blog.blogrestapi.exception.ResourceNotFoundException;
 import com.ilacad.blog.blogrestapi.payload.CommentDto;
 import com.ilacad.blog.blogrestapi.repository.CommentRepository;
