@@ -9,6 +9,8 @@ import com.ilacad.blog.blogrestapi.repository.PostRepository;
 import com.ilacad.blog.blogrestapi.service.CommentService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CommentServiceImpl implements CommentService {
 
@@ -36,6 +38,11 @@ public class CommentServiceImpl implements CommentService {
         Comment newComment = commentRepository.save(comment);
 
         return mapToDto(newComment);
+    }
+
+    @Override
+    public List<CommentDto> getCommentsByPostId(Long postId) {
+        return null;
     }
 
     private CommentDto mapToDto(Comment comment) {
