@@ -10,6 +10,7 @@ import com.ilacad.blog.blogrestapi.service.CommentService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -42,7 +43,11 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<CommentDto> getCommentsByPostId(Long postId) {
-        return null;
+
+        // Retrieve a list of comments by post id
+        List<Comment> comments = commentRepository.findByPostId(postId);
+
+        return comments.stream().map(comment -> mapToDto(comment)).collect(Collectors.toList());
     }
 
     private CommentDto mapToDto(Comment comment) {
