@@ -4,6 +4,7 @@ import com.ilacad.blog.blogrestapi.entity.Comment;
 import com.ilacad.blog.blogrestapi.entity.Post;
 import com.ilacad.blog.blogrestapi.exception.BlogApiException;
 import com.ilacad.blog.blogrestapi.exception.ResourceNotFoundException;
+import com.ilacad.blog.blogrestapi.mapper.CommentMapper;
 import com.ilacad.blog.blogrestapi.payload.CommentDto;
 import com.ilacad.blog.blogrestapi.repository.CommentRepository;
 import com.ilacad.blog.blogrestapi.repository.PostRepository;
@@ -19,15 +20,17 @@ public class CommentServiceImpl implements CommentService {
 
     private CommentRepository commentRepository;
     private PostRepository postRepository;
+    private CommentMapper commentMapper;
 
-    public CommentServiceImpl(CommentRepository commentRepository, PostRepository postRepository) {
+    public CommentServiceImpl(CommentRepository commentRepository, PostRepository postRepository, CommentMapper commentMapper) {
         this.commentRepository = commentRepository;
         this.postRepository = postRepository;
+        this.commentMapper = commentMapper;
     }
 
     @Override
     public CommentDto createComment(Long postId, CommentDto commentDto) {
-        Comment comment = mapToEntity(commentDto);
+        Comment comment = commentMapper.INSTANCE.commentDtoToComment(commentDto);
 
         // Retrieve post by id
         Post post = postRepository.findById(postId).orElseThrow(
@@ -39,7 +42,7 @@ public class CommentServiceImpl implements CommentService {
         // Save the new comment to database
         Comment newComment = commentRepository.save(comment);
 
-        return mapToDto(newComment);
+        return commentMapper.INSTANCE.commentToCommentDto(newComment);
     }
 
     @Override
@@ -47,13 +50,13 @@ public class CommentServiceImpl implements CommentService {
         // Retrieve a list of comments by post id
         List<Comment> comments = commentRepository.findByPostId(postId);
 
-        return comments.stream().map(comment -> mapToDto(comment)).collect(Collectors.toList());
+        return comments.stream().map(comment -> commentMapper.INSTANCE.commentToCommentDto(comment)).collect(Collectors.toList());
     }
 
     @Override
     public CommentDto getCommentById(Long postId, Long commentId) {
         Comment comment = validateComment(postId, commentId);
-        return mapToDto(comment);
+        return commentMapper.INSTANCE.commentToCommentDto(comment);
     }
 
     @Override
@@ -67,7 +70,7 @@ public class CommentServiceImpl implements CommentService {
         // Save it in database
         Comment updatedComment = commentRepository.save(comment);
 
-        return mapToDto(updatedComment);
+        return commentMapper.INSTANCE.commentToCommentDto(updatedComment);
     }
 
     @Override
@@ -93,26 +96,5 @@ public class CommentServiceImpl implements CommentService {
 
         return comment;
     }
-
-    private CommentDto mapToDto(Comment comment) {
-        CommentDto commentDto = new CommentDto(
-                comment.getId(),
-                comment.getName(),
-                comment.getEmail(),
-                comment.getBody());
-
-        return commentDto;
-    }
-
-    private Comment mapToEntity(CommentDto commentDto) {
-        Comment comment = new Comment(
-                commentDto.getId(),
-                commentDto.getName(),
-                commentDto.getEmail(),
-                commentDto.getBody());
-
-        return comment;
-    }
-
 
 }

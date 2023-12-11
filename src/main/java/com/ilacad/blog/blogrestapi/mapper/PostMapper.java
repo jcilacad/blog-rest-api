@@ -3,14 +3,14 @@ package com.ilacad.blog.blogrestapi.mapper;
 import com.ilacad.blog.blogrestapi.entity.Post;
 import com.ilacad.blog.blogrestapi.payload.PostDto;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface PostMapper {
 
     PostMapper INSTANCE = Mappers.getMapper(PostMapper.class);
 
     Post postDtoToPost(PostDto postDto);
-
     PostDto postToPostDto(Post post);
 }
