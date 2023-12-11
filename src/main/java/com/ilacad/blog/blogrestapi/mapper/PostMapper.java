@@ -3,7 +3,6 @@ package com.ilacad.blog.blogrestapi.mapper;
 import com.ilacad.blog.blogrestapi.entity.Post;
 import com.ilacad.blog.blogrestapi.payload.PostDto;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper
