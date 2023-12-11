@@ -30,11 +30,11 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostDto createPost(PostDto postDto) {
 
-        Post post = mapToEntity(postDto);
+        Post post = postMapper.INSTANCE.postDtoToPost(postDto);
         // Save the post to database
         Post newPost = postRepository.save(post);
 
-        PostDto postResponse = mapToDto(newPost);
+        PostDto postResponse = postMapper.INSTANCE.postToPostDto(newPost);
 
         return postResponse;
     }
@@ -56,7 +56,7 @@ public class PostServiceImpl implements PostService {
         List<Post> pageList = posts.getContent();
 
         // Convert post entity to dto
-        List<PostDto> content =  pageList.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
+        List<PostDto> content =  pageList.stream().map(post -> postMapper.INSTANCE.postToPostDto(post)).collect(Collectors.toList());
 
         PostResponse postResponse = new PostResponse();
 
@@ -70,37 +70,11 @@ public class PostServiceImpl implements PostService {
         return postResponse;
     }
 
-    // Convert entity to dto
-    private PostDto mapToDto(Post post) {
-
-        PostDto postDto = new PostDto(
-                post.getId(),
-                post.getTitle(),
-                post.getDescription(),
-                post.getContent()
-        );
-
-        return postDto;
-    }
-
-    // Convert the DTO to entity
-    private Post mapToEntity(PostDto postDto) {
-
-        Post post = new Post(
-                postDto.getId(),
-                postDto.getTitle(),
-                postDto.getDescription(),
-                postDto.getContent()
-        );
-
-        return post;
-    }
-
     @Override
     public PostDto getPostById(Long id) {
 
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
-        return mapToDto(post);
+        return postMapper.INSTANCE.postToPostDto(post);
     }
 
     @Override
@@ -117,7 +91,7 @@ public class PostServiceImpl implements PostService {
         // Save it in database
         Post updatedPost = postRepository.save(post);
 
-        return mapToDto(updatedPost);
+        return postMapper.INSTANCE.postToPostDto(updatedPost);
     }
 
     @Override
