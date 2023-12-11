@@ -20,21 +20,19 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
 
     private PostRepository postRepository;
-    private PostMapper postMapper;
 
-    public PostServiceImpl(PostRepository postRepository, PostMapper postMapper) {
+    public PostServiceImpl(PostRepository postRepository) {
         this.postRepository = postRepository;
-        this.postMapper = postMapper;
     }
 
     @Override
     public PostDto createPost(PostDto postDto) {
 
-        Post post = postMapper.INSTANCE.postDtoToPost(postDto);
+        Post post = PostMapper.INSTANCE.postDtoToPost(postDto);
         // Save the post to database
         Post newPost = postRepository.save(post);
 
-        PostDto postResponse = postMapper.INSTANCE.postToPostDto(newPost);
+        PostDto postResponse = PostMapper.INSTANCE.postToPostDto(newPost);
 
         return postResponse;
     }
@@ -56,7 +54,7 @@ public class PostServiceImpl implements PostService {
         List<Post> pageList = posts.getContent();
 
         // Convert post entity to dto
-        List<PostDto> content =  pageList.stream().map(post -> postMapper.INSTANCE.postToPostDto(post)).collect(Collectors.toList());
+        List<PostDto> content =  pageList.stream().map(post -> PostMapper.INSTANCE.postToPostDto(post)).collect(Collectors.toList());
 
         PostResponse postResponse = new PostResponse();
 
@@ -74,7 +72,7 @@ public class PostServiceImpl implements PostService {
     public PostDto getPostById(Long id) {
 
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
-        return postMapper.INSTANCE.postToPostDto(post);
+        return PostMapper.INSTANCE.postToPostDto(post);
     }
 
     @Override
@@ -91,7 +89,7 @@ public class PostServiceImpl implements PostService {
         // Save it in database
         Post updatedPost = postRepository.save(post);
 
-        return postMapper.INSTANCE.postToPostDto(updatedPost);
+        return PostMapper.INSTANCE.postToPostDto(updatedPost);
     }
 
     @Override

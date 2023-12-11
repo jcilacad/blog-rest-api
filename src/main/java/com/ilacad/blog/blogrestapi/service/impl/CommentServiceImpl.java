@@ -9,6 +9,7 @@ import com.ilacad.blog.blogrestapi.payload.CommentDto;
 import com.ilacad.blog.blogrestapi.repository.CommentRepository;
 import com.ilacad.blog.blogrestapi.repository.PostRepository;
 import com.ilacad.blog.blogrestapi.service.CommentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -20,17 +21,16 @@ public class CommentServiceImpl implements CommentService {
 
     private CommentRepository commentRepository;
     private PostRepository postRepository;
-    private CommentMapper commentMapper;
 
-    public CommentServiceImpl(CommentRepository commentRepository, PostRepository postRepository, CommentMapper commentMapper) {
+
+    public CommentServiceImpl(CommentRepository commentRepository, PostRepository postRepository) {
         this.commentRepository = commentRepository;
         this.postRepository = postRepository;
-        this.commentMapper = commentMapper;
     }
 
     @Override
     public CommentDto createComment(Long postId, CommentDto commentDto) {
-        Comment comment = commentMapper.INSTANCE.commentDtoToComment(commentDto);
+        Comment comment = CommentMapper.INSTANCE.commentDtoToComment(commentDto);
 
         // Retrieve post by id
         Post post = postRepository.findById(postId).orElseThrow(
@@ -42,7 +42,7 @@ public class CommentServiceImpl implements CommentService {
         // Save the new comment to database
         Comment newComment = commentRepository.save(comment);
 
-        return commentMapper.INSTANCE.commentToCommentDto(newComment);
+        return CommentMapper.INSTANCE.commentToCommentDto(newComment);
     }
 
     @Override
@@ -50,13 +50,13 @@ public class CommentServiceImpl implements CommentService {
         // Retrieve a list of comments by post id
         List<Comment> comments = commentRepository.findByPostId(postId);
 
-        return comments.stream().map(comment -> commentMapper.INSTANCE.commentToCommentDto(comment)).collect(Collectors.toList());
+        return comments.stream().map(comment -> CommentMapper.INSTANCE.commentToCommentDto(comment)).collect(Collectors.toList());
     }
 
     @Override
     public CommentDto getCommentById(Long postId, Long commentId) {
         Comment comment = validateComment(postId, commentId);
-        return commentMapper.INSTANCE.commentToCommentDto(comment);
+        return CommentMapper.INSTANCE.commentToCommentDto(comment);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class CommentServiceImpl implements CommentService {
         // Save it in database
         Comment updatedComment = commentRepository.save(comment);
 
-        return commentMapper.INSTANCE.commentToCommentDto(updatedComment);
+        return CommentMapper.INSTANCE.commentToCommentDto(updatedComment);
     }
 
     @Override
