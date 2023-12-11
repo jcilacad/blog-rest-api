@@ -2,6 +2,7 @@ package com.ilacad.blog.blogrestapi.service.impl;
 
 import com.ilacad.blog.blogrestapi.entity.Post;
 import com.ilacad.blog.blogrestapi.exception.ResourceNotFoundException;
+import com.ilacad.blog.blogrestapi.mapper.PostMapper;
 import com.ilacad.blog.blogrestapi.payload.PostDto;
 import com.ilacad.blog.blogrestapi.payload.PostResponse;
 import com.ilacad.blog.blogrestapi.repository.PostRepository;
@@ -19,9 +20,11 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
 
     private PostRepository postRepository;
+    private PostMapper postMapper;
 
-    public PostServiceImpl(PostRepository postRepository) {
+    public PostServiceImpl(PostRepository postRepository, PostMapper postMapper) {
         this.postRepository = postRepository;
+        this.postMapper = postMapper;
     }
 
     @Override
