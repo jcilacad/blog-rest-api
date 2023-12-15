@@ -28,17 +28,17 @@ public class SecurityConfig {
     }
 
     @Bean
-    public static PasswordEncoder passwordEncoder () {
+    public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    
+
     @Bean
-    public AuthenticationManager authenticationManager (AuthenticationConfiguration configuration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
 
     @Bean
-    SecurityFilterChain securityFilterChain (HttpSecurity httpSecurity) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> {
@@ -48,23 +48,5 @@ public class SecurityConfig {
 
         return httpSecurity.build();
     }
-
-    @Bean
-    public UserDetailsService userDetailsService () {
-
-        UserDetails jc = User.builder()
-                .username("jc")
-                .password(passwordEncoder().encode("jc"))
-                .roles("ADMIN")
-                .build();
-
-
-        UserDetails jp = User.builder()
-                .username("jp")
-                .password(passwordEncoder().encode("jp"))
-                .roles("USER")
-                .build();
-
-        return new InMemoryUserDetailsManager(jc, jp);
-    }
+    
 }
