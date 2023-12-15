@@ -1,7 +1,6 @@
 package com.ilacad.blog.blogrestapi.exception;
 
 import com.ilacad.blog.blogrestapi.payload.ErrorDetails;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -52,15 +51,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
         Map<String, String> errors = new HashMap<>();
-
         ex.getBindingResult().getAllErrors().forEach(error -> {
-
             String fieldName = ((FieldError) error).getField();
             String message = error.getDefaultMessage();
-
             errors.put(fieldName, message);
         });
-
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
