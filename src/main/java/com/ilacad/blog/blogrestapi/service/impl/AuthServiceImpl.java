@@ -1,10 +1,13 @@
 package com.ilacad.blog.blogrestapi.service.impl;
 
+import com.ilacad.blog.blogrestapi.entity.User;
+import com.ilacad.blog.blogrestapi.exception.BlogApiException;
 import com.ilacad.blog.blogrestapi.payload.LoginDto;
 import com.ilacad.blog.blogrestapi.payload.RegisterDto;
 import com.ilacad.blog.blogrestapi.repository.RoleRepository;
 import com.ilacad.blog.blogrestapi.repository.UserRepository;
 import com.ilacad.blog.blogrestapi.service.AuthService;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -44,6 +47,23 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String register(RegisterDto registerDto) {
-        return null;
+
+        if (userRepository.existsByUsername(registerDto.getUsername())) {
+            throw new BlogApiException(HttpStatus.BAD_REQUEST, "Username already exists");
+        }
+
+        if (userRepository.existsByEmail(registerDto.getEmail())) {
+            throw new BlogApiException(HttpStatus.BAD_REQUEST, "Email already exists");
+        }
+
+        User user = new User();
+        user.setName(registerDto.getName());
+        user.setUsername(registerDto.getUsername());
+        user.setEmail(registerDto.getEmail());
+        user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
+
+      userRepository.save(user);
+
+      return "User registered successfully.";
     }
 }
