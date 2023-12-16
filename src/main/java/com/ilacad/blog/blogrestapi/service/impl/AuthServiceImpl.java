@@ -66,6 +66,11 @@ public class AuthServiceImpl implements AuthService {
         user.setEmail(registerDto.getEmail());
         user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
 
+        Set<Role> roles = new HashSet<>();
+        Role role = roleRepository.findByName("ROLE_USER").get();
+        roles.add(role);
+        user.setRoles(roles);
+
         userRepository.save(user);
 
         return "User registered successfully.";
