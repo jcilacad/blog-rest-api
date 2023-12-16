@@ -1,5 +1,6 @@
 package com.ilacad.blog.blogrestapi.service.impl;
 
+import com.ilacad.blog.blogrestapi.entity.Role;
 import com.ilacad.blog.blogrestapi.entity.User;
 import com.ilacad.blog.blogrestapi.exception.BlogApiException;
 import com.ilacad.blog.blogrestapi.payload.LoginDto;
@@ -14,6 +15,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -62,8 +66,8 @@ public class AuthServiceImpl implements AuthService {
         user.setEmail(registerDto.getEmail());
         user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
 
-      userRepository.save(user);
+        userRepository.save(user);
 
-      return "User registered successfully.";
+        return "User registered successfully.";
     }
 }
