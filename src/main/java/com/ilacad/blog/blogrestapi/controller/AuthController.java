@@ -1,5 +1,6 @@
 package com.ilacad.blog.blogrestapi.controller;
 
+import com.ilacad.blog.blogrestapi.payload.JWTAuthResponse;
 import com.ilacad.blog.blogrestapi.payload.LoginDto;
 import com.ilacad.blog.blogrestapi.payload.RegisterDto;
 import com.ilacad.blog.blogrestapi.service.AuthService;
@@ -21,9 +22,13 @@ public class AuthController {
     }
 
     @PostMapping(value = {"login", "signin"})
-    public ResponseEntity<String> login (@RequestBody LoginDto loginDto) {
-        String response = authService.login(loginDto);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<JWTAuthResponse> login (@RequestBody LoginDto loginDto) {
+        String token = authService.login(loginDto);
+
+        JWTAuthResponse jwtAuthResponse = new JWTAuthResponse();
+        jwtAuthResponse.setAccessToken(token);
+
+        return ResponseEntity.ok(jwtAuthResponse);
     }
 
     @PostMapping(value = {"register", "signup"})
