@@ -7,6 +7,7 @@ import com.ilacad.blog.blogrestapi.payload.LoginDto;
 import com.ilacad.blog.blogrestapi.payload.RegisterDto;
 import com.ilacad.blog.blogrestapi.repository.RoleRepository;
 import com.ilacad.blog.blogrestapi.repository.UserRepository;
+import com.ilacad.blog.blogrestapi.security.JwtTokenProvider;
 import com.ilacad.blog.blogrestapi.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,15 +27,18 @@ public class AuthServiceImpl implements AuthService {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
+    private JwtTokenProvider jwtTokenProvider;
 
     public AuthServiceImpl(AuthenticationManager authenticationManager,
                            UserRepository userRepository,
                            RoleRepository roleRepository,
-                           PasswordEncoder passwordEncoder) {
+                           PasswordEncoder passwordEncoder,
+                           JwtTokenProvider jwtTokenProvider) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @Override
