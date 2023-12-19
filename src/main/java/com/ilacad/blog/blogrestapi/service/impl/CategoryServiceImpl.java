@@ -15,16 +15,11 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryServiceImpl(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
-
+    
     @Override
     public CategoryDto addCategory(CategoryDto categoryDto) {
-
-        // Convert category dto to entity
         Category category = CategoryMapper.INSTANCE.categoryDtoToCategory(categoryDto);
-
-        // Save the category in database
         Category savedCategory = categoryRepository.save(category);
-
         return CategoryMapper.INSTANCE.categoryToCategoryDto(savedCategory);
     }
 }
