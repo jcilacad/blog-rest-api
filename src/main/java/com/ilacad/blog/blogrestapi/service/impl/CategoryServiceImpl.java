@@ -9,6 +9,9 @@ import com.ilacad.blog.blogrestapi.service.CategoryService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
@@ -17,7 +20,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryServiceImpl(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
-    
+
     @Override
     public CategoryDto addCategory(CategoryDto categoryDto) {
         Category category = CategoryMapper.INSTANCE.categoryDtoToCategory(categoryDto);
@@ -31,5 +34,13 @@ public class CategoryServiceImpl implements CategoryService {
                 .findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "id", categoryId));
         return CategoryMapper.INSTANCE.categoryToCategoryDto(category);
+    }
+
+    @Override
+    public List<CategoryDto> getCategories() {
+        List<Category> categories = categoryRepository.findAll();
+        return categories.stream().map(category ->
+                CategoryMapper.INSTANCE.categoryToCategoryDto(category))
+                .collect(Collectors.toList());
     }
 }
