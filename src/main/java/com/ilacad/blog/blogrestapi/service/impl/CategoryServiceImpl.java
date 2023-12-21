@@ -7,7 +7,6 @@ import com.ilacad.blog.blogrestapi.payload.CategoryDto;
 import com.ilacad.blog.blogrestapi.repository.CategoryRepository;
 import com.ilacad.blog.blogrestapi.service.CategoryService;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.ResourceAccessException;
 
 import java.util.List;
 import java.util.stream.Collectors;
