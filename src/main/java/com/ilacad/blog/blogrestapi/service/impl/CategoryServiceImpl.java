@@ -52,9 +52,9 @@ public class CategoryServiceImpl implements CategoryService {
 
         category.setName(categoryDto.getName());
         category.setDescription(categoryDto.getDescription());
-        category.setId(categoryDto.getId());
+        category.setId(categoryId);
 
-        categoryRepository.save(category);
-        return CategoryMapper.INSTANCE.categoryToCategoryDto(category);
+        Category updatedCategory = categoryRepository.save(category);
+        return CategoryMapper.INSTANCE.categoryToCategoryDto(updatedCategory);
     }
 }
