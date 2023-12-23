@@ -1,10 +1,12 @@
 package com.ilacad.blog.blogrestapi.service.impl;
 
+import com.ilacad.blog.blogrestapi.entity.Category;
 import com.ilacad.blog.blogrestapi.entity.Post;
 import com.ilacad.blog.blogrestapi.exception.ResourceNotFoundException;
 import com.ilacad.blog.blogrestapi.mapper.PostMapper;
 import com.ilacad.blog.blogrestapi.payload.PostDto;
 import com.ilacad.blog.blogrestapi.payload.PostResponse;
+import com.ilacad.blog.blogrestapi.repository.CategoryRepository;
 import com.ilacad.blog.blogrestapi.repository.PostRepository;
 import com.ilacad.blog.blogrestapi.service.PostService;
 import org.springframework.data.domain.Page;
@@ -20,15 +22,27 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
 
     private PostRepository postRepository;
+    private CategoryRepository categoryRepository;
 
-    public PostServiceImpl(PostRepository postRepository) {
+    public PostServiceImpl(PostRepository postRepository,
+                           CategoryRepository categoryRepository) {
         this.postRepository = postRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
-    public PostDto createPost(PostDto postDto) {
+    public PostDto createPost(PostDto postDto) { // TODO: fix the response in api, the categoryId value is always null
+
+        // Find category by id, else throw an exception
+        Category category = categoryRepository
+                .findById(postDto.getCategoryId())
+                .orElseThrow(() -> new ResourceNotFoundException("Category", "id", postDto.getCategoryId()));
 
         Post post = PostMapper.INSTANCE.postDtoToPost(postDto);
+
+        // Set the category of post
+        post.setCategory(category);
+
         // Save the post to database
         Post newPost = postRepository.save(post);
 
