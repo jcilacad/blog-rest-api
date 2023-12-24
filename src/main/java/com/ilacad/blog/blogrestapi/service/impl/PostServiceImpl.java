@@ -69,7 +69,11 @@ public class PostServiceImpl implements PostService {
         List<Post> pageList = posts.getContent();
 
         // Convert post entity to dto
-        List<PostDto> content =  pageList.stream().map(post -> PostMapper.INSTANCE.postToPostDto(post)).collect(Collectors.toList());
+        List<PostDto> content =  pageList.stream().map(post -> {
+            PostDto postDto = PostMapper.INSTANCE.postToPostDto(post);
+            postDto.setCategoryId(post.getCategory().getId());
+            return postDto;
+        }).collect(Collectors.toList());
 
         PostResponse postResponse = new PostResponse();
 
@@ -104,7 +108,10 @@ public class PostServiceImpl implements PostService {
         // Save it in database
         Post updatedPost = postRepository.save(post);
 
-        return PostMapper.INSTANCE.postToPostDto(updatedPost);
+        PostDto responseDto = PostMapper.INSTANCE.postToPostDto(updatedPost);
+        responseDto.setCategoryId(updatedPost.getCategory().getId());
+
+        return responseDto;
     }
 
     @Override
