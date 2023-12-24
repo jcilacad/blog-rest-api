@@ -31,7 +31,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostDto createPost(PostDto postDto) { // TODO: fix the response in api, the categoryId value is always null
+    public PostDto createPost(PostDto postDto) {
 
         // Find category by id, else throw an exception
         Category category = categoryRepository
@@ -47,6 +47,7 @@ public class PostServiceImpl implements PostService {
         Post newPost = postRepository.save(post);
 
         PostDto postResponse = PostMapper.INSTANCE.postToPostDto(newPost);
+        postResponse.setCategoryId(newPost.getCategory().getId());
 
         return postResponse;
     }
