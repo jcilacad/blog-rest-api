@@ -2,6 +2,8 @@ package com.ilacad.blog.blogrestapi.config;
 
 import com.ilacad.blog.blogrestapi.security.JwtAuthenticationEntryPoint;
 import com.ilacad.blog.blogrestapi.security.JwtAuthenticationFilter;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -23,6 +25,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @EnableMethodSecurity
 @Configuration
+@SecurityScheme(
+        name = "Bearer Authentication",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer"
+)
 public class SecurityConfig {
 
     private UserDetailsService userDetailsService;
