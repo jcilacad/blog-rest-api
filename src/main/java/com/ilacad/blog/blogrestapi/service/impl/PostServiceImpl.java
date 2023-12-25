@@ -137,7 +137,11 @@ public class PostServiceImpl implements PostService {
         List<Post> posts = postRepository.findByCategory_id(categoryId);
 
         return posts.stream()
-                .map(post -> PostMapper.INSTANCE.postToPostDto(post))
+                .map(post -> {
+                    PostDto postDto = PostMapper.INSTANCE.postToPostDto(post);
+                    postDto.setCategoryId(categoryId);
+                    return postDto;
+                })
                 .collect(Collectors.toList());
     }
 }
