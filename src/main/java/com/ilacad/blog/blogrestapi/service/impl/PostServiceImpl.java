@@ -91,7 +91,10 @@ public class PostServiceImpl implements PostService {
     public PostDto getPostById(Long id) {
 
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
-        return PostMapper.INSTANCE.postToPostDto(post);
+
+        PostDto postDto = PostMapper.INSTANCE.postToPostDto(post);
+        postDto.setCategoryId(post.getCategory().getId());
+        return postDto;
     }
 
     @Override
