@@ -59,7 +59,7 @@ public class PostController {
 
     @Operation(
             summary = "Retrieve a Post by id REST API",
-            description = "Create Post REST API is used to save post object into database."
+            description = "Retrieve Post by id REST API is used to retrieve post object by id from database."
     )
     @ApiResponse(
             responseCode = "200",
