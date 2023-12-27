@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/posts")
+@RequestMapping("/api/v1/posts")
 @Tag(name = "POST", description = "Post Management API")
 public class PostController {
 
@@ -65,7 +65,7 @@ public class PostController {
             responseCode = "200",
             description = "Http Status 200 Success"
     )
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}")
     public ResponseEntity<PostDto> getPostById(@PathVariable(name = "id") Long id) {
         return ResponseEntity.ok(postService.getPostById(id));
     }
